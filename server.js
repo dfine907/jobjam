@@ -3,13 +3,10 @@ dotenv.config()
 import express from 'express'
 const app = express()
 import morgan from 'morgan'
-import { nanoid } from 'nanoid'
 
-//temporary data:
-let jobs = [
-  { id: nanoid(), company: 'apple', position: 'front-end' },
-  { id: nanoid(), company: 'google', position: 'back-end' },
-]
+// my routers:
+import jobRouter from './routes/jobRouter.js'
+
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
@@ -26,36 +23,18 @@ app.post('/', (req, res) => {
   res.json({ message: 'Data received!!', data: req.body })
 })
 
-// route to get all jobs
-app.get('/api/v1/jobs', (req, res) => {
-  res.status(200).json({ jobs })
+app.use('/api/v1/jobs', jobRouter)
+
+//below middleware will take care of the REQUESTS, but not the server
+app.use('*', (req, res)=> {
+  res.status(404).json( {msg: "not found"} )
+})
+//this gets triggered by our existing controllers - so the request is OK
+app.use((err, req, res, next)=> {
+  console.log(err)
+  res.status(500).json({msg: "Oops! Something went wrong!"})
 })
 
-//create a job
-app.post('/api/v1/jobs', (req, res) => {
-  const { company, position } = req.body
-  if (!company || !position) {
-    res
-      .status(400)
-      .json({ msg: 'Please provide company and position' })
-    return
-  }
-  const id = nanoid(10)
-  const job = { id, company, position }
-  jobs.push(job)
-  res.status(201).json({ job })
-})
-
-//get single job
-app.get('/api/v1/jobs/:id', (req, res) => {
-  console.log(req.body)
-  const { id } = req.params
-  const job = jobs.find((job) => job.id === id)
-  if (!job) {
-    return res.status(404).json({msg: `No job with ID ${id}`})
-  }
-  res.status(200).json({job})
-})
 
 const port = process.env.PORT || 5000
 
