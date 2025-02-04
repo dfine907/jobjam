@@ -3,10 +3,10 @@ dotenv.config()
 import express from 'express'
 const app = express()
 import morgan from 'morgan'
+import mongoose from 'mongoose'
 
 // my routers:
 import jobRouter from './routes/jobRouter.js'
-
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
@@ -35,9 +35,19 @@ app.use((err, req, res, next)=> {
   res.status(500).json({msg: "Oops! Something went wrong!"})
 })
 
-
 const port = process.env.PORT || 5000
 
-app.listen(port, () => {
-  console.log(`Server running on ${port}`)
-})
+//SET UP DATABASE HERE USING MONGOOSE
+try {
+  await mongoose.connect(process.env.MONGO_URL)
+  app.listen(port, () => {
+    console.log(`Server running on ${port}`)
+  })
+} catch (error) {
+  console.log(error)
+  process.exit(1)
+}
+
+
+
+

@@ -9,6 +9,7 @@ import {
   deleteJob,
 } from '../controllers/jobControllers.js'
 
+//just like app.post etc..
 // router.get('/', getAllJobs)
 // router.post('/', createJob)
 
