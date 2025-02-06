@@ -1,8 +1,7 @@
 import Job from '../models/JobModel.js'
-
 import { nanoid } from 'nanoid'
 
-//temporary data:
+
 let jobs = [
   { id: nanoid(), company: 'apple', position: 'front-end' },
   { id: nanoid(), company: 'google', position: 'back-end' },
@@ -14,8 +13,8 @@ export const getAllJobs = async (req, res) => {
   }
 
   export const createJob = async (req, res) => {
-    const { company, position } = req.body
-    const job = await Job.create( {company, position})
+   
+    const job = await Job.create(req.body)
     res.status(201).json({ job })
   }
 
