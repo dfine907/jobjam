@@ -29,7 +29,7 @@ app.use('/api/v1/jobs', jobRouter)
 app.use('*', (req, res)=> {
   res.status(404).json( {msg: "not found"} )
 })
-//this gets triggered by our existing controllers - so the request is OK
+//gets triggered by existing controllers and express-async-errors package 
 app.use((err, req, res, next)=> {
   console.log(err)
   res.status(500).json({msg: "Oops! Something went wrong!"})
