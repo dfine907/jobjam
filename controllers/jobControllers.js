@@ -33,8 +33,8 @@ export const createJob = async (req, res) => {
 export const getJob = async (req, res) => {
   const { id } = req.params
   const job = await Job.findById(id)
-  console.log(job);
-  
+  console.log(job)
+
   if (!job) {
     return res.status(404).json({ msg: `No job with ID ${id}` })
   }
@@ -60,12 +60,10 @@ export const updateJob = async (req, res) => {
 
 export const deleteJob = async (req, res) => {
   const { id } = req.params
-  const job = jobs.find((job) => job.id === id)
-  if (!job) {
+  const removedJob = await Job.findByIdAndDelete(id)
+  if (!removedJob) {
     return res.status(404).json({ msg: `No job with ID ${id}` })
   }
-  const newJobs = jobs.filter((job) => job.id !== id)
-  jobs = newJobs
 
-  res.status(200).json({ msg: 'job deleted successfully!' })
+  res.status(200).json({ msg: 'job deleted successfully!', job: removedJob})
 }
