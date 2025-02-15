@@ -8,6 +8,9 @@ import mongoose from 'mongoose'
 // my routers:
 import jobRouter from './routes/jobRouter.js'
 
+//my middleware
+import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js'
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
@@ -30,10 +33,7 @@ app.use('*', (req, res)=> {
   res.status(404).json( {msg: "not found"} )
 })
 //gets triggered by existing controllers and express-async-errors package 
-app.use((err, req, res, next)=> {
-  console.log(err)
-  res.status(500).json({msg: "Oops! Something went wrong!"})
-})
+app.use(errorHandlerMiddleware)
 
 const port = process.env.PORT || 5000
 
