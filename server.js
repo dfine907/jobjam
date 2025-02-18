@@ -4,7 +4,8 @@ import express from 'express'
 const app = express()
 import morgan from 'morgan'
 import mongoose from 'mongoose'
-import { body, validationResult } from 'express-validator'
+
+import { validateTest } from './middleware/validationMiddleware.js'
 
 // my routers:
 import jobRouter from './routes/jobRouter.js'
@@ -23,22 +24,16 @@ app.get('/', (req, res) => {
 })
 
 // * * * *  TESTING VALIDATIONS:
-app.post('/api/v1/test', [
-  body('name').notEmpty().withMessage('name is required')
-], (req, res, next)=> {
-  const errors = validationResult(req)
-  if(!errors.isEmpty()){
-    const errorMessages = errors.array().map((error)=> error.msg)
-    return res.status(400).json({errors: errorMessages})
-  }
+app.post(
+  '/api/v1/test',
   
+  validateTest,
 
-  next()
-},
-(req, res) => {
-  const { name } = req.body
-  res.json({ msg: `hello ${name}` })
-})
+  (req, res) => {
+    const { name } = req.body
+    res.json({ msg: `hello ${name}` })
+  }
+)
 
 app.use('/api/v1/jobs', jobRouter)
 
