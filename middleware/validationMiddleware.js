@@ -11,7 +11,6 @@ const withValidationErrors = (validateValues) => {
         const errorMessages = errors.array().map((error) => error.msg)
         throw new BadRequestError(errorMessages)
       }
-
       next()
     },
   ]
@@ -20,8 +19,8 @@ const withValidationErrors = (validateValues) => {
 export const validateTest = withValidationErrors([
   body('name')
     .notEmpty()
-    .withMessage('name is required')
+    .withMessage('name is required ')
     .isLength({ min: 3, max: 50 })
-    .withMessage('name must be between 3 and 50 characters')
+    .withMessage('Name must be between 3 and 50 characters')
     .trim(),
 ])
