@@ -1,5 +1,6 @@
 import { body, validationResult } from 'express-validator'
 import { BadRequestError } from '../errors/customErrors.js'
+import { JOB_STATUS, JOB_TYPE } from '../utils/constants.js'
 
 //build a function that takes care of the errors, look at schema for reference
 const withValidationErrors = (validateValues) => {
@@ -16,9 +17,16 @@ const withValidationErrors = (validateValues) => {
   ]
 }
 
-exporrt const validateJobInput = withValidationErrors([
+export const validateJobInput = withValidationErrors([
   body('company').notEmpty().withMessage('Company is required'),
-  body('company').notEmpty().withMessage('Company is required'),
-  body('company').notEmpty().withMessage('Company is required'),
-
+  body('position').notEmpty().withMessage('Position is required'),
+  body('jobLocation')
+    .notEmpty()
+    .withMessage('Job location is required'),
+  body('jobStatus')
+    .isIn(Object.values(JOB_STATUS))
+    .withMessage('Invalid status value'),
+    body('jobType')
+    .isIn(Object.values(JOB_TYPE))
+    .withMessage('Invalid type value'),
 ])
