@@ -1,7 +1,7 @@
 import { body, validationResult } from 'express-validator'
 import { BadRequestError } from '../errors/customErrors.js'
 
-//build a function that takes care of the errors
+//build a function that takes care of the errors, look at schema for reference
 const withValidationErrors = (validateValues) => {
   return [
     validateValues,
@@ -16,11 +16,9 @@ const withValidationErrors = (validateValues) => {
   ]
 }
 
-export const validateTest = withValidationErrors([
-  body('name')
-    .notEmpty()
-    .withMessage('name is required ')
-    .isLength({ min: 3, max: 50 })
-    .withMessage('Name must be between 3 and 50 characters')
-    .trim(),
+exporrt const validateJobInput = withValidationErrors([
+  body('company').notEmpty().withMessage('Company is required'),
+  body('company').notEmpty().withMessage('Company is required'),
+  body('company').notEmpty().withMessage('Company is required'),
+
 ])

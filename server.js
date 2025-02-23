@@ -5,12 +5,12 @@ const app = express()
 import morgan from 'morgan'
 import mongoose from 'mongoose'
 
-import { validateTest } from './middleware/validationMiddleware.js'
 
-// my routers:
+
+// routers
 import jobRouter from './routes/jobRouter.js'
 
-//my middleware
+// middleware
 import errorHandlerMiddleware from './middleware/errorHandlerMiddleware.js'
 
 if (process.env.NODE_ENV === 'development') {
@@ -23,17 +23,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-// * * * *  TESTING VALIDATIONS:
-app.post(
-  '/api/v1/test',
-  
-  validateTest,
-
-  (req, res) => {
-    const { name } = req.body
-    res.json({ msg: `hello ${name}` })
-  }
-)
 
 app.use('/api/v1/jobs', jobRouter)
 
